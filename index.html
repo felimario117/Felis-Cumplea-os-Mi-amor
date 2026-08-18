@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ari x Feli | Para Mi Brujita Mexicana ❤️</title>
+
+  <meta property="og:title" content="¡Tengo un regalo especial para ti, mi brujita! ❤️ (Ari x Feli)" />
+  <meta property="og:description" content="Toca aquí para abrir tu carta y descubrir tu regalo internacional..." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=UnifrakturMaguntia&family=Montserrat:ital,wght@0,300;0,400;0,600;1,300;1,500&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #060408;
+      --card-bg: #100b16;
+      --gold-aztec: #dfb138;
+      --gold-glow: rgba(223, 177, 56, 0.4);
+      --cempasuchil: #ff6a00;
+      --red-blood: #80001a;
+      --purple-gothic: #231233;
+      --text-light: #f3ecf8;
+      --text-muted: #bda3ce;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      /* FONDO CON PATRÓN MÍSTICO DE HECHIZOS Y DEGRADADO GÓTICO */
+      background-image: 
+        radial-gradient(circle at 50% 0%, #200a2b 0%, transparent 70%),
+        radial-gradient(circle at 50% 100%, #150009 0%, transparent 70%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><text x="10" y="30" fill="rgba(223, 177, 56, 0.05)" font-size="20">🔮</text><text x="70" y="50" fill="rgba(255, 106, 0, 0.05)" font-size="22">🌙</text><text x="30" y="90" fill="rgba(223, 177, 56, 0.05)" font-size="24">✨</text><text x="80" y="100" fill="rgba(223, 177, 56, 0.05)" font-size="18">🧹</text><circle cx="60" cy="60" r="40" fill="none" stroke="rgba(223,177,56,0.03)" stroke-width="1"/></svg>');
+      background-attachment: fixed;
+    }
+
+    /* Partículas de Fondo */
+    #canvas-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* 1. INTRODUCCIÓN: SOBRE MÍSTICO */
+    #intro-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #040206;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
+    }
+
+    #intro-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      cursor: pointer;
+      text-align: center;
+      animation: float 4s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .gothic-seal {
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, var(--red-blood) 0%, #3a000a 100%);
+      border: 3px solid var(--gold-aztec);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 30px var(--red-blood), 0 0 50px var(--gold-glow);
+      margin: 0 auto 25px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+    }
+
+    .gothic-seal:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 0 40px var(--cempasuchil), 0 0 60px var(--gold-aztec);
+    }
+
+    .gothic-seal::after {
+      content: '💀';
+      font-size: 3.5rem;
+    }
+
+    .intro-text h2 {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 2.8rem;
+      color: var(--gold-aztec);
+      text-shadow: 0 0 15px var(--gold-glow);
+      margin-bottom: 5px;
+    }
+
+    .intro-couple-tag {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-aztec);
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+    }
+
+    .intro-text p {
+      font-family: 'Cinzel', serif;
+      color: var(--cempasuchil);
+      letter-spacing: 3px;
+      font-size: 0.95rem;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main-wrapper {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1.5s ease 0.5s, transform 1.5s ease 0.5s;
+    }
+
+    .main-wrapper.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card-gothic {
+      background: var(--card-bg);
+      border: 2px solid var(--gold-aztec);
+      border-radius: 16px;
+      padding: 45px 30px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), 0 0 20px var(--gold-glow);
+      position: relative;
+      margin-bottom: 40px;
+      overflow: hidden;
+    }
+
+    .card-gothic::before {
+      content: '';
+      position: absolute;
+      top: 6px; left: 6px; right: 6px; bottom: 6px;
+      border: 1px dashed var(--cempasuchil);
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* TITULOS DE SECCIÓN */
+    .section-title {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-aztec);
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .section-title::before, .section-title::after {
+      content: '❖';
+      color: var(--cempasuchil);
+      font-size: 1rem;
+    }
+
+    /* ANIMACIÓN DE FELIZ CUMPLEAÑOS */
+    .bday-header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .couple-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: var(--gold-aztec);
+      letter-spacing: 6px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    .bday-title {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 3.8rem;
+      background: linear-gradient(135deg, #fff 0%, var(--gold-aztec) 50%, var(--cempasuchil) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px var(--gold-glow);
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .bday-subtitle {
+      font-family: 'Cinzel', serif;
+      color: var(--cempasuchil);
+      font-size: 1.1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    /* ANIMACIÓN COLOMBIA -> MÉXICO */
+    .intl-love-section {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .map-animation-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(6, 4, 8, 0.8);
+      border: 1px solid rgba(223, 177, 56, 0.3);
+      border-radius: 16px;
+      padding: 30px 20px;
+      position: relative;
+    }
+
+    .country-box { flex: 1; text-align: center; }
+    .flag-avatar { font-size: 3.2rem; display: block; margin-bottom: 8px; filter: drop-shadow(0 0 10px var(--gold-glow)); }
+    .country-name { font-family: 'Cinzel', serif; color: var(--gold-aztec); font-size: 1.2rem; font-weight: 700; }
+    .country-role { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+    .flight-path {
+      flex: 1.5;
+      position: relative;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .path-line {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cempasuchil), var(--gold-aztec), var(--red-blood));
+      position: absolute;
+      box-shadow: 0 0 10px var(--gold-aztec);
+    }
+
+    .heart-plane {
+      position: absolute;
+      font-size: 1.8rem;
+      animation: travel 3.5s infinite ease-in-out;
+      filter: drop-shadow(0 0 8px var(--cempasuchil));
+    }
+
+    @keyframes travel {
+      0% { left: 0%; transform: scale(0.8) rotate(-10deg); }
+      50% { left: 50%; transform: scale(1.3) translateY(-15px) rotate(0deg); }
+      100% { left: 90%; transform: scale(0.8) rotate(10deg); }
+    }
+
+    /* RAZONES POR LAS QUE TE AMO */
+    .reasons-container {
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .reasons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .reason-card {
+      background: rgba(6, 4, 8, 0.85);
+      border: 1px solid rgba(223, 177, 56, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      text-align: left;
+    }
+
+    .reason-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold-aztec);
+      box-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    .reason-card h3 {
+      font-family: 'Cinzel', serif;
+      color: var(--cempasuchil);
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .reason-card p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-light);
+    }
+
+    /* INTERACCIÓN: CABALLERO Y BRUJA */
+    .game-section {
+      background: linear-gradient(180deg, rgba(35, 18, 51, 0.5) 0%, rgba(6, 4, 8, 0.9) 100%);
+      border: 1px solid var(--gold-aztec);
+      border-radius: 16px;
+      padding: 30px 20px;
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .game-arena {
+      height: 130px;
+      border-bottom: 2px solid var(--gold-aztec);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 0 30px;
+      position: relative;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .game-char {
+      font-size: 3.2rem;
+      transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #knight-char { transform: translateX(0); }
+    #witch-char { transform: translateX(0); }
+
+    .game-status {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-aztec);
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      min-height: 24px;
+    }
+
+    /* ESCENA RETRO: MARIO Y PEACH CON IMÁGENES */
+    .mario-card {
+      background: #000;
+      border: 2px solid #5c94fc;
+      border-radius: 14px;
+      padding: 25px 15px;
+      margin: 40px 0;
+      text-align: center;
+      font-family: 'Press Start 2P', cursive;
+      box-shadow: 0 0 20px rgba(92, 148, 252, 0.3);
+    }
+
+    .mario-title {
+      color: #fcb450;
+      font-size: 0.7rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .mario-stage {
+      background: linear-gradient(to bottom, #000018 0%, #101038 65%, #d86800 65%, #00a800 72%);
+      height: 150px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 15px;
+      gap: 20px;
+      overflow: hidden;
+      border: 1px solid #fff;
+      position: relative;
+    }
+
+    .mario-img, .peach-img {
+      width: 55px;
+      height: 70px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
+      animation: pixel-bounce 1.2s infinite ease-in-out alternate;
+    }
+
+    .peach-img {
+      animation-delay: 0.2s;
+    }
+
+    @keyframes pixel-bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8px); }
+    }
+
+    .mario-msg {
+      color: #fff;
+      font-size: 0.6rem;
+      margin-top: 18px;
+      line-height: 1.8;
+    }
+
+    /* POEMA DE LA BRUJITA - EXTENDIDO A 8 ESTROFAS */
+    .poem-card {
+      background: linear-gradient(180deg, rgba(35, 18, 51, 0.6) 0%, rgba(16, 11, 22, 0.9) 100%);
+      border-left: 3px solid var(--gold-aztec);
+      border-right: 3px solid var(--gold-aztec);
+      padding: 40px 25px;
+      border-radius: 12px;
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .poem-stanza {
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 2;
+      color: var(--text-light);
+      margin-bottom: 25px;
+      font-weight: 300;
+    }
+
+    .poem-stanza:last-child {
+      margin-bottom: 0;
+    }
+
+    .poem-highlight { color: var(--gold-aztec); font-weight: 600; font-style: normal; }
+
+    /* MÚSICA Y CANCIONES */
+    .music-container { margin: 40px 0; }
+
+    .song-card {
+      background: rgba(6, 4, 8, 0.85);
+      border: 1px solid rgba(223, 177, 56, 0.3);
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 25px;
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .song-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold-aztec);
+    }
+
+    @media (max-width: 680px) {
+      .song-card { flex-direction: column; text-align: center; }
+    }
+
+    .album-cover {
+      width: 140px;
+      height: 140px;
+      border-radius: 12px;
+      border: 2px solid var(--gold-aztec);
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+      flex-shrink: 0;
+    }
+
+    .song-details { flex: 1; }
+    .song-title { font-family: 'Cinzel', serif; color: var(--gold-aztec); font-size: 1.3rem; margin-bottom: 4px; }
+    .song-artist { color: var(--cempasuchil); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; display: block; }
+
+    .song-meaning {
+      background: rgba(35, 18, 51, 0.5);
+      border-left: 2px solid var(--cempasuchil);
+      padding: 12px 15px;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      border-radius: 0 8px 8px 0;
+      color: var(--text-light);
+    }
+
+    .custom-player {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    @media (max-width: 680px) { .custom-player { justify-content: center; } }
+
+    .play-btn {
+      background: linear-gradient(135deg, var(--red-blood), #40000d);
+      color: var(--gold-aztec);
+      border: 1px solid var(--gold-aztec);
+      padding: 10px 22px;
+      border-radius: 20px;
+      font-family: 'Cinzel', serif;
+      cursor: pointer;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .play-btn:hover {
+      background: var(--gold-aztec);
+      color: #000;
+      box-shadow: 0 0 15px var(--gold-aztec);
+    }
+
+    /* CONTADOR EN TIEMPO REAL */
+    .timer-section {
+      background: radial-gradient(circle, rgba(128, 0, 26, 0.2) 0%, rgba(16, 11, 22, 0.9) 100%);
+      border: 1px solid var(--gold-aztec);
+      border-radius: 16px;
+      padding: 35px 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .timer-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+
+    .time-box {
+      background: rgba(6, 4, 8, 0.9);
+      border: 1px solid var(--cempasuchil);
+      border-radius: 12px;
+      padding: 15px 20px;
+      min-width: 90px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    }
+
+    .time-number {
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--gold-aztec);
+      display: block;
+      text-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    .time-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .forever-text {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 2.2rem;
+      color: var(--cempasuchil);
+      margin-top: 15px;
+      text-shadow: 0 0 15px rgba(255, 106, 0, 0.4);
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 40px;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="canvas-particles"></canvas>
+
+  <div id="intro-overlay">
+    <div class="envelope-wrapper" onclick="openMagicLetter()">
+      <div class="gothic-seal"></div>
+      <div class="intro-couple-tag">✦ Ari x Feli ✦</div>
+      <div class="intro-text">
+        <h2>Para mi Brujita Hermosa </h2>
+        <p></p><h2>Andres Felipe Roa Cofles</h2>
+        <p>✦ Toca el sello para romper el hechizo y abrir tu regalo ✦</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-wrapper" id="main-content">
+    <div class="card-gothic">
+
+      <header class="bday-header">
+        <div class="couple-badge">✦ Ari x Feli ✦</div>
+        <h1 class="bday-title">¡Feliz Cumpleaños!</h1>
+        <p class="bday-subtitle">✦ Reina de mi Alma & Brujita de mi Corazón ✦</p>
+      </header>
+
+      <section class="intl-love-section">
+        <div class="section-title">Amor Sin Fronteras</div>
+        <div class="map-animation-container">
+          <div class="country-box">
+            <span class="flag-avatar">🇨🇴</span>
+            <div class="country-name">Colombia</div>
+            <div class="country-role">donde yo te amo y te pienso</div>
+          </div>
+          <div class="flight-path">
+            <div class="path-line"></div>
+            <div class="heart-plane">✈️</div>
+          </div>
+          <div class="country-box">
+            <span class="flag-avatar">🇲🇽</span>
+            <div class="country-name">México</div>
+            <div class="country-role">Donde reina de mi mente esta</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="reasons-container">
+        <div class="section-title">Por Qué Eres La Única En Mi Corazón</div>
+        <div class="reasons-grid">
+          <div class="reason-card">
+            <h3>Mi Corazón Es Tuyo</h3>
+            <p>No existe nadie más en este mundo. Te di la llave de mi pecho y eres la única dueña de cada uno de mis latidos.</p>
+          </div>
+          <div class="reason-card">
+            <h3>Tu Magia Mística</h3>
+            <p>Esa combinación de ternura, fuerza mexicana y misterio con el que iluminas incluso mis días más oscuros.</p>
+          </div>
+          <div class="reason-card">
+            <h3>Un Lazo Indestructible</h3>
+            <p>La distancia entre Colombia y México no apaga lo que sentimos; reafirma que Ari y Feli nacieron para estar juntos.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="game-section">
+        <div class="section-title">El Caballero Feli y su Brujita Ari</div>
+        <div class="game-arena">
+          <div class="game-char" id="knight-char"><img src="caballero.png" alt="Mario" class="mario-img"></div>
+          <div class="game-char" id="witch-char"><img src="bruja.png" alt="Mario" class="mario-img"></div>
+        </div>
+        <div class="game-status" id="game-status">Toca el botón para romper la distancia</div>
+        <button class="play-btn" onclick="uniteLovers()">Unir a Feli y Ari ❤️</button>
+      </section>
+
+      <section class="mario-card">
+        <div class="mario-title">WORLD 1-1: Love</div>
+        <div class="mario-stage">
+          <img src="pngwing.com.png" alt="Mario" class="mario-img">
+          <div style="font-size: 1.5rem; color: #ff0055;">❤️</div>
+          <img src="imagen_2026-08-17_214225182-removebg-preview.png" alt="Princess Peach" class="peach-img">
+        </div>
+        <div class="mario-msg">
+          THANK YOU! YOUR PRINCESS IS IN MEXICO!<br>
+          (Y Feli cruzó océanos para estar con su Princesa Sandia).
+        </div>
+      </section>
+
+      <section class="poem-card">
+        <div class="section-title">El Embrujo Eterno de Ari y Feli</div>
+        
+        <p class="poem-stanza">
+          Desde tierras aztecas llegaste a mi vida,<br>
+          con ojos de noche y sonrisa encendida.<br>
+          Eres la <span class="poem-highlight">brujita que me tiene loco</span> y sin cura,<br>
+          la única capaz de calmar mi locura.
+        </p>
+
+        <p class="poem-stanza">
+          Ni la distancia entre Bogotá y tu cielo sagrado,<br>
+          podrá romper este pacto que hemos trazado.<br>
+          Te amo en presente, te amo en futuro,<br>
+          con la fuerza del sol y un cariño tan puro.
+        </p>
+
+        <p class="poem-stanza">
+          Tus labios me guardan un dulce secreto,<br>
+          tus manos me enseñan un mundo perfecto.<br>
+          En cada mirada que cruzas conmigo,<br>
+          encuentro mi casa, mi luz y mi abrigo.
+        </p>
+
+        <p class="poem-stanza">
+          Tejí en las estrellas tu nombre, mi bruja,<br>
+          el mapa del alma que nunca se arruga.<br>
+          No importa cuán largo parezca el camino,<br>
+          en tus brazos siempre reside mi destino.
+        </p>
+
+        <p class="poem-stanza">
+          Entre calaveras, cempasúchil y flores,<br>
+          pintamos la historia de nuestros amores.<br>
+          Eres el misterio de un bello hechicero,<br>
+          la reina absoluta que tanto yo quiero.
+        </p>
+
+        <p class="poem-stanza">
+          Si el tiempo avanzara más lento a tu lado,<br>
+          sabría que el cielo por fin nos ha dado<br>
+          la gracia sublime de un amor tan profano,<br>
+          donde mi alma camina tomando tu mano.
+        </p>
+
+        <p class="poem-stanza">
+          A ti, mi princesa, mi dulce consuelo,<br>
+          la que eleva mis días directo hasta el cielo.<br>
+          Gracias por ser el faro que guía,<br>
+          la chispa eterna que enciende mi vida.
+        </p>
+
+        <p class="poem-stanza">
+          Hoy celebro tu vida, tu magia, tu ser,<br>
+          dichoso el destino que me dejó conocer<br>
+          a la mujer más hermosa que habita en la tierra,<br>
+          la que mi alma cuida y mi pecho conserva.
+        </p>
+      </section>
+
+      <section class="music-container">
+        <div class="section-title">Nuestra Música & Su Significado</div>
+
+        <div class="song-card">
+          <img src="caifanes.jpg" alt="La Negra Tomasa" class="album-cover">
+          <div class="song-details">
+            <h3 class="song-title">La Negra Tomasa</h3>
+            <span class="song-artist">Caifanes</span>
+            <div class="song-meaning">
+              <strong>Lo que significa para mí:</strong> No puedo vivir sin ti. Eres mi Negra Tomasa, la mujer que me tiene loco de amor, la que reina en mis pensamientos y a quien deseo tener a mi lado en cada instante.
+            </div>
+            <div class="custom-player">
+              <button class="play-btn" onclick="playAudio('audio-tomasa')">▶ Reproducir Canción</button>
+              <audio id="audio-tomasa" src="Caifanes_-_La_Negra_Tomasa_Bilongo_-_Versi_n_Radio_(mp3.pm).mp3"></audio>
+            </div>
+          </div>
+        </div>
+
+        <div class="song-card">
+          <img src="zoe.jpg" alt="Labios Rotos" class="album-cover">
+          <div class="song-details">
+            <h3 class="song-title">Labios Rotos</h3>
+            <span class="song-artist">Zoé</span>
+            <div class="song-meaning">
+              <strong>Lo que significa para mí:</strong> Quiero cuidarte y amarte durante toda la vida. Curar cualquier herida, proteger tu corazón y construir un refugio juntos donde solo exista nuestro amor.
+            </div>
+            <div class="custom-player">
+              <button class="play-btn" onclick="playAudio('audio-zoe')">▶ Reproducir Canción</button>
+              <audio id="audio-zoe" src="Zo_-_Labios_Rotos_(mp3.pm).mp3"></audio>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="timer-section">
+        <div class="section-title">Tiempo Amándote</div>
+        <p style="font-size: 0.95rem; color: var(--text-muted);">Desde que comenzó nuestra historia juntas en Marzo:</p>
+
+        <div class="timer-grid">
+          <div class="time-box">
+            <span class="time-number" id="days">00</span>
+            <span class="time-label">Días</span>
+          </div>
+          <div class="time-box">
+            <span class="time-number" id="hours">00</span>
+            <span class="time-label">Horas</span>
+          </div>
+          <div class="time-box">
+            <span class="time-number" id="minutes">00</span>
+            <span class="time-label">Minutos</span>
+          </div>
+          <div class="time-box">
+            <span class="time-number" id="seconds">00</span>
+            <span class="time-label">Segundos</span>
+          </div>
+        </div>
+
+        <div class="forever-text">...Y será por siempre. ❤️</div>
+      </section>
+
+      <footer class="footer-note">
+        Ari x Feli ✦ De Colombia a México con amor eterno
+      </footer>
+
+    </div>
+  </div>
+
+  <script>
+    /* ABRIR LA CARTA */
+    function openMagicLetter() {
+      const overlay = document.getElementById('intro-overlay');
+      const mainContent = document.getElementById('main-content');
+      
+      overlay.classList.add('hidden');
+      mainContent.classList.add('visible');
+
+      createExplosion();
+    }
+
+    /* UNIR CABALLERO Y BRUJA */
+    function uniteLovers() {
+      const knight = document.getElementById('knight-char');
+      const witch = document.getElementById('witch-char');
+      const status = document.getElementById('game-status');
+
+      knight.style.transform = 'translateX(180px)';
+      witch.style.transform = 'translateX(-180px)';
+
+      setTimeout(() => {
+        status.innerHTML = '✨ ¡Feli y su Brujita Ari se han reunido para siempre! ✨';
+      }, 900);
+    }
+
+    /* REPRODUCTOR DE AUDIO */
+    function playAudio(id) {
+      const audioElements = document.querySelectorAll('audio');
+      audioElements.forEach(a => {
+        if (a.id !== id) {
+          a.pause();
+          a.currentTime = 0;
+        }
+      });
+
+      const currentAudio = document.getElementById(id);
+      if (currentAudio.paused) {
+        currentAudio.play();
+      } else {
+        currentAudio.pause();
+      }
+    }
+
+    /* CONTADOR DEL AMOR (Desde Marzo 1, 2026) */
+    const startDate = new Date('2026-03-01T00:00:00');
+
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').innerText = String(days).padStart(2, '0');
+      document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+      document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    /* CANVAS PARTICLES */
+    const canvas = document.getElementById('canvas-particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.5 + 0.5;
+        this.speedY = Math.random() * 0.8 + 0.2;
+        this.opacity = Math.random() * 0.7 + 0.2;
+        this.color = Math.random() > 0.5 ? '#dfb138' : '#ff6a00';
+      }
+
+      update() {
+        this.y -= this.speedY;
+        if (this.y < 0) {
+          this.y = canvas.height;
+          this.x = Math.random() * canvas.width;
+        }
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 60; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    animateParticles();
+
+    function createExplosion() {
+      for (let i = 0; i < 40; i++) {
+        const p = new Particle();
+        p.y = canvas.height / 2;
+        p.x = canvas.width / 2;
+        p.speedY = (Math.random() - 0.5) * 5;
+        particles.push(p);
+      }
+    }
+  </script>
+</body>
+</html>
